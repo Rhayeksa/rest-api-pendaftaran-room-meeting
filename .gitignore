@@ -1,0 +1,7 @@
+# folders
+/node_modules
+/public
+/views
+
+# files
+package-lock.json
