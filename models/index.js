@@ -1,18 +1,22 @@
 const dbConfig = require("../configs/db.config");
 const Sequelize = require("sequelize");
 
-const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
-  host: dbConfig.HOST,
-  dialect: dbConfig.dialect,
-  operatorsAliases: false,
-  pool: {
-    max: dbConfig.pool.max,
-    min: dbConfig.pool.min,
-    acquire: dbConfig.pool.acquire,
-    idle: dbConfig.pool.idle,
-  },
-  port: dbConfig.port,
-});
+const sequelize = new Sequelize(
+  dbConfig.local.DB,
+  dbConfig.local.USER,
+  dbConfig.local.PASSWORD,
+  {
+    host: dbConfig.local.HOST,
+    dialect: dbConfig.local.dialect,
+    operatorsAliases: false,
+    pool: {
+      max: dbConfig.local.pool.max,
+      min: dbConfig.local.pool.min,
+      acquire: dbConfig.local.pool.acquire,
+      idle: dbConfig.local.pool.idle,
+    },
+  }
+);
 
 const db = {};
 db.sequelize = sequelize;
@@ -31,21 +35,14 @@ db.booking.belongsTo(db.room, {
 
 db.role.belongsToMany(db.user, {
   through: "user_roles",
-  foreignKey: "roleId",
-  otherKey: "userId",
+  foreignKey: "role_id",
+  otherKey: "user_id",
 });
 db.user.belongsToMany(db.role, {
   through: "user_roles",
-  foreignKey: "userId",
-  otherKey: "roleId",
+  foreignKey: "user_id",
+  otherKey: "role_id",
 });
-
-// Foo.hasOne(Bar);
-// Bar.belongsTo(Foo, {
-//   foreignKey: {
-//     name: "myFooId",
-//   },
-// });
 
 db.ROLES = ["admin", "guest"];
 

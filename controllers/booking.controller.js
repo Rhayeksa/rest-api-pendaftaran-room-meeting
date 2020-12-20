@@ -5,6 +5,13 @@ const Room = db.room;
 db.sequelize.sync();
 
 exports.addOne = async (req, res) => {
+  if ((req.body.user_id = 1)) {
+    res.send({
+      message: "Admin can't book",
+      data: null,
+    });
+    return null;
+  }
   const request = {
     total_person: req.body.total_person,
     booking_time: req.body.booking_time,
