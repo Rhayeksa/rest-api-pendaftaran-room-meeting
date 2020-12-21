@@ -1,7 +1,7 @@
 exports.hosting = {
   HOST: "sql12.freemysqlhosting.net",
   USER: "sql12382542",
-  PASSWORD: "",
+  PASSWORD: "9GzelBGuRu",
   DB: "sql12382542",
   dialect: "mysql",
   pool: {

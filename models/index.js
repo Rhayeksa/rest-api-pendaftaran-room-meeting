@@ -2,18 +2,18 @@ const dbConfig = require("../configs/db.config");
 const Sequelize = require("sequelize");
 
 const sequelize = new Sequelize(
-  dbConfig.local.DB,
-  dbConfig.local.USER,
-  dbConfig.local.PASSWORD,
+  dbConfig.hosting.DB,
+  dbConfig.hosting.USER,
+  dbConfig.hosting.PASSWORD,
   {
-    host: dbConfig.local.HOST,
-    dialect: dbConfig.local.dialect,
+    host: dbConfig.hosting.HOST,
+    dialect: dbConfig.hosting.dialect,
     operatorsAliases: false,
     pool: {
-      max: dbConfig.local.pool.max,
-      min: dbConfig.local.pool.min,
-      acquire: dbConfig.local.pool.acquire,
-      idle: dbConfig.local.pool.idle,
+      max: dbConfig.hosting.pool.max,
+      min: dbConfig.hosting.pool.min,
+      acquire: dbConfig.hosting.pool.acquire,
+      idle: dbConfig.hosting.pool.idle,
     },
   }
 );
