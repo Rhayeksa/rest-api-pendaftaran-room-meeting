@@ -8,8 +8,9 @@ const User = db.user;
 const roomsRouter = require("./routes/room.router");
 const bookingsRouter = require("./routes/booking.router");
 const authRouter = require("./routes/auth.router");
+const multipart = require("connect-multiparty");
 
-db.sequelize.sync(() => {
+db.sequelize.sync({ force: true }).then(() => {
   Role.create({
     id: 1,
     name: "admin",
@@ -27,13 +28,16 @@ db.sequelize.sync(() => {
   });
 });
 
+// db.sequelize.sync();
+
 const app = express();
 app.use(logger("dev"));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(multipart());
 
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   res.header(
     "Access-Control-Allow-Headers",
     "x-access-token, Origin, Content-Type, Accept"
@@ -42,9 +46,9 @@ app.use(function (req, res, next) {
 });
 
 // router
+app.use("/auth", authRouter);
 app.use("/rooms", roomsRouter);
 app.use("/bookings", bookingsRouter);
-app.use("/auth", authRouter);
 
 // home
 app.get("/", (req, res, next) => {

@@ -1,13 +1,13 @@
-const fs = require("fs");
+const { default: Axios } = require("axios");
 const db = require("../models");
 const Model = db.room;
 
-// TODO upload image ke pihak ke tiga(image hosting)
 exports.addOne = async (req, res) => {
+  // TODO upload image ke pihak ke tiga(imgur.com via axios)
   const request = {
     room_name: req.body.room_name,
     room_capacity: req.body.room_capacity,
-    // photo: fs.readFileSync(__dirnam),
+    // photo: imageUrl,
   };
   Model.create(request)
     .then((data) => {

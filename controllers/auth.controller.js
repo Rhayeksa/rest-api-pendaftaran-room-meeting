@@ -2,12 +2,13 @@ var jwt = require("jsonwebtoken");
 var bcrypt = require("bcrypt");
 const config = require("../configs/auth.config");
 const db = require("../models");
+const { default: Axios } = require("axios");
+const Op = db.Sequelize.Op;
 const User = db.user;
 const Role = db.role;
 
-const Op = db.Sequelize.Op;
-
 exports.register = (req, res) => {
+  // TODO upload image ke pihak ke tiga(imgur.com via axios)
   User.create({
     email: req.body.email,
     password: bcrypt.hashSync(req.body.password, 8),
@@ -64,11 +65,19 @@ exports.login = (req, res) => {
         for (let i = 0; i < roles.length; i++) {
           authorities.push("ROLE_" + roles[i].name.toUpperCase());
         }
-        res.status(200).send({
-          id: user.id,
-          email: user.email,
-          roles: authorities,
-          accessToken: token,
+        Axios.post("https://api.imgur.com/oauth2/token", {
+          grant_type: "refresh_token",
+          client_id: "6c38f6da421f912",
+          refresh_token: "43f6e4cece6496527753539ac00667136d589c87",
+          client_secret: "2a5ecb72d8bd164b175630096556ddd6b1d47471",
+        }).then((image) => {
+          res.send({
+            id: user.id,
+            email: user.email,
+            roles: authorities,
+            accessToken: token,
+            accessTokenImage: image.data.access_token,
+          });
         });
       });
     })
