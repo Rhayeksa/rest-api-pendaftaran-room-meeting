@@ -21,10 +21,14 @@ exports.register = (req, res) => {
               [Op.or]: req.body.roles,
             },
           },
-        }).then(() => {
-          user.setRoles([2]).then(() => {
+        }).then((roles) => {
+          user.setRoles(roles).then(() => {
             res.send({ message: "User was registered successfully!" });
           });
+        });
+      } else {
+        user.setRoles([2]).then(() => {
+          res.send({ message: "User was registered successfully!" });
         });
       }
     })
